@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package arka;
+package arkademy;
 
 /**
  *
  * @author Rifky Ekananda
  */
 
-public class Arka {
+public class Arkademy {
     public static void main(String[] args) {
         //mengubah karakter di dalam string
  
