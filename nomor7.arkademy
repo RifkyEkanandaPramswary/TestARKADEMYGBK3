@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.22/css/uikit.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.22/js/uikit.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.22/js/uikit-icons.min.js"></script>
+	</head>
+	<body>
+	
+
+	<div class="uk-container uk-container-medium uk-position-center">
+	  <h1>TABLE JUMLAH PRODUK</h1>
+	  <?php 
+	$koneksi = mysqli_connect("localhost","root","","arkademy");
+	 
+	// Check connection
+	if (mysqli_connect_errno()){
+	  echo "Koneksi database gagal : " . mysqli_connect_error();
+	}
+	?>
+	  <table class="uk-table uk-table-hover uk-table-divider">
+	   <thead>
+	        <tr>
+	          <th>No</th>
+	          <th>Categories</th>
+	          <th>Jumlah Produk</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	        <?php
+	        $no = 1;
+	    $data = mysqli_query($koneksi,"SELECT product_categories.id, product_categories.name, Count(products.name) as Jumlah_Product FROM product_categories LEFT JOIN products ON product_categories.id = products.category_id GROUP BY product_categories.id");
+	    while($d = mysqli_fetch_array($data)){
+	      ?>
+	        <tr>
+	          <td><?php echo $no++; ?></td>
+	          <td><?php echo $d['name']; ?></td>
+	          <td><?php echo $d['Jumlah_Product']; ?></td>
+	        </tr>
+	        <?php 
+	    }
+	    ?>
+	      </tbody>
+	</table>
+	</div>
+	</body>
+	</html>
+
