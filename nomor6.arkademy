@@ -1,47 +1,77 @@
-<!DOCTYPE html>
-	<html lang="en">
-	<head>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.22/css/uikit.min.css" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.22/js/uikit.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.22/js/uikit-icons.min.js"></script>
-	</head>
-	<body>
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+	
+	
+	/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `BootcampArkademy`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+
+	CREATE TABLE `product_categories` (
+  	`id` int(20) NOT NULL,
+  	`name` varchar(150) NOT NULL,
+  	`created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+	) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+		INSERT INTO `product_categories` (`id`, `name`, `created_date`) VALUES
+		(1, 'Peralatan Mandi', '2014-11-22 12:45:34'),
+		(2, 'Minuman Kemasan', '2014-11-22 12:46:34'),
+		(3, 'Produk Susu', '2014-11-22 12:47:34');
+
+
+	CREATE TABLE `products` (
+ 	 `id` int(20) NOT NULL,
+ 	 `name` varchar(150) NOT NULL,
+ 	 `category_id` int(20) NOT NULL,
+  	`created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+	) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+		INSERT INTO `products` (`id`, `name`, `category_id`, `created_date`) VALUES
+		(1, 'Sabun Wangi', 1, '2014-12-22 12:45:34'),
+		(2, 'Minuman Cola', 2, '2014-12-22 12:45:36'),
+		(3, 'Prenagon Gold', 3, '2014-12-22 112:46:34'),
+		(4, 'Aquaa', 2, '2014-12-22 12:47:34'),
+		(5, 'The Botol', 2, '2014-12-22 12:48:34'),
+		(6, 'Sampo', 1, '2014-12-22 12:48:40');
+
+
+
+	ALTER TABLE `products`
+	  ADD PRIMARY KEY (`id`),
+	  ADD KEY `fk_category` (`category_id`);
 	
 
-	<div class="uk-container uk-container-medium uk-position-center">
-	  <h1>TABLE JUMLAH PRODUK</h1>
-	  <?php 
-	$koneksi = mysqli_connect("localhost","root","","arkademy");
-	 
-	// Check connection
-	if (mysqli_connect_errno()){
-	  echo "Koneksi database gagal : " . mysqli_connect_error();
-	}
-	?>
-	  <table class="uk-table uk-table-hover uk-table-divider">
-	   <thead>
-	        <tr>
-	          <th>No</th>
-	          <th>Categories</th>
-	          <th>Jumlah Produk</th>
-	        </tr>
-	      </thead>
-	      <tbody>
-	        <?php
-	        $no = 1;
-	    $data = mysqli_query($koneksi,"SELECT product_categories.id, product_categories.name, Count(products.name) as Jumlah_Product FROM product_categories LEFT JOIN products ON product_categories.id = products.category_id GROUP BY product_categories.id");
-	    while($d = mysqli_fetch_array($data)){
-	      ?>
-	        <tr>
-	          <td><?php echo $no++; ?></td>
-	          <td><?php echo $d['name']; ?></td>
-	          <td><?php echo $d['Jumlah_Product']; ?></td>
-	        </tr>
-	        <?php 
-	    }
-	    ?>
-	      </tbody>
-	</table>
-	</div>
-	</body>
-	</html>
+	ALTER TABLE `product_categories`
+	  ADD PRIMARY KEY (`id`);
+	
+
+	ALTER TABLE `products`
+	  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+	
+
+	ALTER TABLE `product_categories`
+	  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+	
+
+	ALTER TABLE `products`
+	  ADD CONSTRAINT `fk_category` FOREIGN KEY (`category_id`) REFERENCES `product_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+	select product_categories.id , product_categories.name , count(products.category_id) 
+	as jumlah_product from product_categories join products ON products.category_id = product_categories.id
+	group by products.category_id
+
